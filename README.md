@@ -75,7 +75,7 @@ Open http://localhost:5173
 
 📁 Folder Structure
 📦 root/
-├── client/           # Vite + React frontend
+├── client/           # Vite + React frontend\r\n
 │   ├── features/     # Login and invoices logic
 │   ├── components/   # Shared UI components
 │   └── pages/        # Routes like Dashboard
