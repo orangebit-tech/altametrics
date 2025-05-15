@@ -71,21 +71,6 @@ Open http://localhost:5173
 
  Modal invoice viewer
 
- Playwright end-to-end test (optional)
-
-📁 Folder Structure
-📦 root/
-├── client/           # Vite + React frontend\r\n
-│   ├── features/     # Login and invoices logic
-│   ├── components/   # Shared UI components
-│   └── pages/        # Routes like Dashboard
-├── server/           # NestJS backend
-│   ├── src/
-│   │   ├── auth/     # JWT & Passport setup
-│   │   └── invoices/ # Invoice routes and service
-│   └── prisma/       # Prisma schema & seed
-├── docker-compose.yml  # PostgreSQL container setup
-
 
 📦 Docker Setup Summary
 PostgreSQL container
