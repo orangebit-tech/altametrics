@@ -82,8 +82,6 @@ Server and client run independently
 📍 Project Notes
 Designed for simplicity, clarity, and correctness.
 
-Not pixel-perfect, but mobile-friendly and accessible.
-
 Can be extended easily with new features like filtering, editing, etc.
 
 📧 Contact
