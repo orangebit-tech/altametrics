@@ -4,47 +4,57 @@ import * as bcrypt from 'bcrypt'
 const prisma = new PrismaClient()
 
 async function main() {
-  const password = await bcrypt.hash('password123', 10)
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Skipping seed: NODE_ENV is production')
+    return
+  }
 
-  const user = await prisma.user.upsert({
-    where: { email: 'demo@inbox.com' },
-    update: {},
-    create: {
-      email: 'demo@inbox.com',
+  console.log('🌱 Seeding dev database...')
+
+  await prisma.invoice.deleteMany()
+  await prisma.user.deleteMany()
+
+  const password = await bcrypt.hash(process.env.SEED_USER_PASSWORD || '', 10)
+
+  const user = await prisma.user.create({
+    data: {
+      email: process.env.SEED_USER || '',
       name: 'Demo User',
       password,
     },
   })
 
-  await prisma.invoice.createMany({
-    data: [
-      {
-        vendor_name: 'AWS',
-        amount: 123.45,
-        due_date: new Date('2024-10-15'),
-        description: 'EC2 hosting',
-        paid: false,
-        userId: user.id,
-      },
-      {
-        vendor_name: 'Google',
-        amount: 67.89,
-        due_date: new Date('2024-10-20'),
-        description: 'Google Workspace',
-        paid: true,
-        userId: user.id,
-      },
-    ],
+  console.log('Created user:', user)
+
+  await prisma.invoice.create({
+    data: {
+      vendor_name: 'AWS',
+      amount: 123.45,
+      due_date: new Date('2024-10-15'),
+      description: 'EC2 hosting',
+      paid: false,
+      userId: user.id,
+    },
   })
 
-  console.log('✅ Seeded DB with demo user and invoices')
+  await prisma.invoice.create({
+    data: {
+      vendor_name: 'Google',
+      amount: 67.89,
+      due_date: new Date('2024-10-20'),
+      description: 'Workspace',
+      paid: true,
+      userId: user.id,
+    },
+  })
+
+  console.log('Invoices created')
+  console.log('Seed complete')
 }
 
 main()
   .catch((e) => {
-    console.error(e)
+    console.error('Seed failed:', e)
     process.exit(1)
   })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+  .finally(() => prisma.$disconnect())
