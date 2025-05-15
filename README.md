@@ -74,15 +74,19 @@ Open http://localhost:5173
  Playwright end-to-end test (optional)
 
 📁 Folder Structure
-.
-├── client/         # Vite + React frontend
-│   ├── features/   # Login and invoices logic
-│   ├── components/ # Shared UI components
-│   └── pages/      # Routes like Dashboard
-├── server/         # NestJS backend
-│   ├── src/auth    # JWT & Passport setup
-│   ├── src/invoices# Invoice routes and service
-│   └── prisma/     # Schema & seed
+📦 root/
+├── client/           # Vite + React frontend
+│   ├── features/     # Login and invoices logic
+│   ├── components/   # Shared UI components
+│   └── pages/        # Routes like Dashboard
+├── server/           # NestJS backend
+│   ├── src/
+│   │   ├── auth/     # JWT & Passport setup
+│   │   └── invoices/ # Invoice routes and service
+│   └── prisma/       # Prisma schema & seed
+├── docker-compose.yml  # PostgreSQL container setup
+
+
 📦 Docker Setup Summary
 PostgreSQL container
 
