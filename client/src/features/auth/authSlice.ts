@@ -5,15 +5,15 @@ interface AuthState {
   token: string | null;
 }
 
-const initialState: AuthState = {
-  token: localStorage.getItem('token'),
+const initialState = {
+  token: localStorage.getItem('token') || null,
 };
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setToken(state, action: PayloadAction<string>) {
+    setToken(state, action) {
       state.token = action.payload;
       localStorage.setItem('token', action.payload);
     },
@@ -23,6 +23,7 @@ export const authSlice = createSlice({
     },
   },
 });
+
 
 export const { setToken, logout } = authSlice.actions;
 export default authSlice.reducer;

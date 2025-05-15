@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '../../api/axios';
+import Button from '../../components/Button';
 
 interface Props {
   id: string;
@@ -25,51 +26,71 @@ export default function InvoiceModal({ id, onClose }: Props) {
   });
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600"
-        >
-          ×
-        </button>
-
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-center justify-center px-4">
+      <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl shadow-xl p-6 w-full max-w-md border border-gray-200 dark:border-gray-700">
         {isLoading ? (
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         ) : isError || !data ? (
-          <p className="text-red-500">Failed to load invoice</p>
+          <p className="text-red-600 dark:text-red-400">Failed to load invoice</p>
         ) : (
           <>
-            <h3 className="text-2xl font-bold mb-4 text-gray-800">{data.vendor_name}</h3>
+            <h3 className="text-2xl font-bold mb-4">{data.vendor_name}</h3>
+            <div className="space-y-4">
+              <Item label="Amount" value={`$${data.amount.toFixed(2)}`} />
+              <Item
+                label="Due Date"
+                value={new Date(data.due_date).toLocaleDateString()}
+              />
+              <Item
+                label="Description"
+                value={
+                  data.description || (
+                    <span className="italic text-gray-500 dark:text-gray-400">
+                      No description
+                    </span>
+                  )
+                }
+              />
+              <Item
+                label="Status"
+                value={
+                  <span
+                    className={`inline-block px-2 py-1 text-sm font-semibold rounded ${
+                      data.paid
+                        ? 'bg-green-200 text-green-900'
+                        : 'bg-yellow-200 text-yellow-900'
+                    }`}
+                  >
+                    {data.paid ? 'Paid' : 'Unpaid'}
+                  </span>
+                }
+              />
+            </div>
 
-            <div className="space-y-2 text-gray-700">
-              <p>
-                <strong>Amount:</strong> ${data.amount.toFixed(2)}
-              </p>
-              <p>
-                <strong>Due Date:</strong>{' '}
-                {new Date(data.due_date).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Description:</strong>{' '}
-                {data.description || <span className="text-gray-400 italic">No description</span>}
-              </p>
-              <p>
-                <strong>Status:</strong>{' '}
-                <span
-                  className={`inline-block px-2 py-1 text-sm font-semibold rounded ${
-                    data.paid
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-yellow-100 text-yellow-700'
-                  }`}
-                >
-                  {data.paid ? 'Paid' : 'Unpaid'}
-                </span>
-              </p>
+            {/* Bottom close button */}
+            <div className="text-center mt-6">
+              <Button onClick={onClose} className="w-full">
+                Close
+              </Button>
             </div>
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+function Item({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) {
+  return (
+    <div className="flex justify-between border-b border-gray-200 dark:border-gray-700 pb-2">
+      <span className="font-medium text-gray-700 dark:text-gray-300">{label}:</span>
+      <span>{value}</span>
     </div>
   );
 }

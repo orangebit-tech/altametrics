@@ -5,6 +5,7 @@ import api from '../../api/axios';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
 import { setToken } from './authSlice';
+import Button from '../../components/Button';
 
 const schema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -63,14 +64,8 @@ export default function LoginPage() {
           />
           {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
         </div>
+        <Button type="submit" disabled={isSubmitting} className="w-full mb-2" >{isSubmitting ? 'Logging in...' : 'Login'}</Button>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition duration-200"
-        >
-          {isSubmitting ? 'Logging in...' : 'Login'}
-        </button>
 
         <p className="text-sm text-center text-gray-400 mt-4">Demo user: <strong>demo@inbox.com / password123</strong></p>
       </form>
