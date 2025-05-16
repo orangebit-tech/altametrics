@@ -1,9 +1,9 @@
 import { logout } from '../features/auth/authSlice';
 import { useAppDispatch } from '../store';
-import { useNavigate } from 'react-router-dom';
 import useDarkMode from '../hooks/useDarkMode';
 import Button from './Button';
 import { LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Header() {
@@ -44,8 +44,7 @@ export default function Header() {
             className="h-9 w-9 rounded-full border border-gray-300 dark:border-gray-600"
           />
 
-          {/* Logout */}
-          <Button onClick={handleLogout} className="flex items-center justify-center gap-2">
+          <Button aria-label="Logout" onClick={handleLogout} className="flex items-center justify-center gap-2">
             <LogOut size={18} />
             </Button>
         </div>
